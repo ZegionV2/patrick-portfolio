@@ -7,7 +7,7 @@ const CONTACT = {
   title: 'Web Developer & Programmer',
   subtitle: 'Open to Virtual Assistant Roles',
   location: 'Dipolog City, Zamboanga del Norte, Philippines',
-  phone: '+63 950 662 8004',
+  phone: '+63 954 072 2828',
   email: 'patrickturtor@gmail.com',
   linkedin: 'https://www.linkedin.com/in/patrick-jason-turtor-035b74373/',
   github: 'https://github.com/ZegionV2',
@@ -975,7 +975,7 @@ function ObjectiveSection() {
 
         {/* Trait tags */}
         <div className="flex flex-wrap gap-2 mt-8">
-          {['Detail-oriented', 'Computer Literate', 'Self-motivated', 'Fast learner', 'Remote-ready', 'Team player'].map((t) => (
+          {['Detail-oriented', 'Computer literate', 'Self-motivated', 'Fast learner', 'Remote-ready', 'Team player'].map((t) => (
             <span key={t} className="font-mono text-xs px-3 py-1.5 rounded-full"
               style={{ background: '#22d3ee0d', color: '#22d3ee99', border: '1px solid #22d3ee22' }}>
               {t}
