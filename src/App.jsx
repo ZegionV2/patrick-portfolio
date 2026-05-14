@@ -227,28 +227,28 @@ const CERTIFICATIONS = [
     issuer: 'Civil Service Commission',
     date: 'March 3, 2024',
     icon: '🏛️',
-    image: null, // e.g. '/cert-csc.jpg'
+    image: '/cert3.jpg', // e.g. '/cert-csc.jpg'
   },
   {
     title: 'Certificate of Participation — World of Works Labor Education for Graduating Students',
     issuer: 'Department of Labor and Employment',
     date: 'September 28, 2024',
     icon: '🎓',
-    image: null,
+    image: '/cert1.jpg',
   },
   {
     title: 'Certificate of Employment',
     issuer: 'OBI Services OPC',
     date: 'January 15, 2026',
     icon: '💼',
-    image: null,
+    image: '/cert2.jpg',
   },
   {
     title: 'Certificate of Completion — On-the-Job Training',
     issuer: 'Virtual Buddy 24/7',
     date: 'April 11, 2025',
     icon: '📋',
-    image: null,
+    image: '/cert4.jpg',
   },
 ];
 
