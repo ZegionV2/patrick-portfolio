@@ -48,7 +48,7 @@ const PROJECTS = [
     description: 'This portfolio — built from scratch using React and Tailwind CSS with scroll animations, skill bars, a project modal gallery, and a dark editorial design.',
     longDescription: 'A fully responsive personal portfolio website designed and developed from scratch. Features include scroll-reveal animations, animated skill bars with pip indicators, a clickable project modal with image gallery, a sticky navbar, back-to-top button, and a clean dark editorial aesthetic using custom Google Fonts.',
     stack: ['React', 'Tailwind CSS', 'JavaScript'],
-    github: null,
+    github: 'https://github.com/ZegionV2/patrick-portfolio',
     live: null,
     images: ['/web1.png', '/web2.png', '/web3.png'], // ▼ add more: ['/proj-1-a.jpg', '/proj-1-b.jpg', '/proj-1-c.jpg']
     bullets: [
