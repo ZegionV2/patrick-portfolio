@@ -34,7 +34,7 @@ const SKILLS_RATED = [
 const SKILLS_TOOLS = [
   'VS Code', 'Arduino IDE', 'Git & GitHub', 'Flutter',
   'Ruijie Cloud', 'Google Workspace', 'Adobe Photoshop',
-  'Microsoft Office', 'React', 'Tailwind CSS', 'AI Prompting',
+  'Microsoft Office', 'React', 'Tailwind CSS', 'AI Prompting', "Canva", "Davinci Resolve"
 ];
 
 // images: array of up to 3 paths — files must be placed inside your /public/ folder
@@ -982,7 +982,7 @@ function ObjectiveSection() {
 
         {/* Trait tags */}
         <div className="flex flex-wrap gap-2 mt-8">
-          {['Detail-oriented', 'Self-motivated', 'Fast learner', 'Remote-ready', 'Team player'].map((t) => (
+          {['Detail-oriented', 'Computer literate', 'Self-motivated', 'Fast learner', 'Remote-ready', 'Team player'].map((t) => (
             <span key={t} className="font-mono text-xs px-3 py-1.5 rounded-full"
               style={{ background: '#22d3ee0d', color: '#22d3ee99', border: '1px solid #22d3ee22' }}>
               {t}
