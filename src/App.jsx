@@ -223,8 +223,8 @@ const EDUCATION = {
 // ▼ For each cert, set image: '/cert-1.jpg' etc. once you add them to /public/
 const CERTIFICATIONS = [
   {
-    title: 'CERTIFICATE OF COMPLETION | Canva Essentials',
-    issuer: 'Canva',
+    title: 'Certificate of Completion | Canva Essentials',
+    issuer: 'Canva Design School',
     date: 'May 15, 2026',
     icon: '🎨',
     image: '/cert5.png', // e.g. '/cert-csc.jpg'
@@ -1325,7 +1325,7 @@ function ExperienceSection() {
 // Desktop cert grid with show-more toggle
 function CertGrid({ onOpen }) {
   const [showAll, setShowAll] = useState(false);
-  const INITIAL = 4;
+  const INITIAL = 5;
   const visible = showAll ? CERTIFICATIONS : CERTIFICATIONS.slice(0, INITIAL);
   const hasMore = CERTIFICATIONS.length > INITIAL;
 
