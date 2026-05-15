@@ -880,7 +880,7 @@ function HeroSection() {
           {[
             { value: '4+', label: 'Projects' },
             { value: '1+', label: 'Yr Experience' },
-            { value: '4', label: 'Certifications' },
+            { value: '5', label: 'Certifications' },
           ].map((stat, i) => (
             <div key={i} className="flex flex-col items-center md:items-start">
               <span className="font-display text-3xl leading-none" style={{ color: '#22d3ee' }}>{stat.value}</span>
@@ -1325,7 +1325,7 @@ function ExperienceSection() {
 // Desktop cert grid with show-more toggle
 function CertGrid({ onOpen }) {
   const [showAll, setShowAll] = useState(false);
-  const INITIAL = 5;
+  const INITIAL = 4;
   const visible = showAll ? CERTIFICATIONS : CERTIFICATIONS.slice(0, INITIAL);
   const hasMore = CERTIFICATIONS.length > INITIAL;
 
