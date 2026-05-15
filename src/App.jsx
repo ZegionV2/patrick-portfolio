@@ -69,7 +69,7 @@ const PROJECTS = [
     live: null,
     youtubeUrl: 'https://www.youtube.com/@OfficialMindMeltShorts',
     youtubeChannel: '@OfficialMindMeltShorts',
-    images: ['/mind1.png'], // ▼ add screenshots of your best videos e.g. '/mindmelt-1.jpg'
+    images: ['/mind1.png', null, null], // ▼ add screenshots of your best videos e.g. '/mindmelt-1.jpg'
     bullets: [
       'Scripted and produced AI-voiced short-form videos on facts and anime theories.',
       'Demonstrated advanced AI prompting skills for content generation.',
@@ -103,8 +103,8 @@ const PROJECTS = [
     stack: ['C++ (ESP32)', 'Dart (Flutter)', 'IoT', 'Servo Motor', 'ESP32-CAM'],
     github: null,
     live: null,
-    gdrive: 'https://drive.google.com/drive/folders/1Bj5Gk1wN3Oh7AIB0cc4fJJSWT-aRxBV0?usp=sharing', // ▼ e.g. 'https://drive.google.com/drive/folders/YOUR_FOLDER_ID'
-    images: ['/cap2.png', '/cap1.png', null],
+    gdrive: null, // ▼ e.g. 'https://drive.google.com/drive/folders/YOUR_FOLDER_ID'
+    images: ['/cap2.png', ['/cap1.png'], null],
     bullets: [
       'ESP32-CAM microcontroller with servo motor for food dispensing.',
       'Flutter mobile app for remote control and monitoring.',
@@ -211,7 +211,7 @@ const EXPERIENCE = [
 const EDUCATION = {
   degree: 'Bachelor of Science in Information Technology (BSIT)',
   school: "Saint Vincent's College Incorporated",
-  year: 'Graduated April 2025',
+  year: 'Graduated April 2026',
   // ▼ Save your school logo to /public/ and write the filename below
   // Example: if you saved it as "svc-logo.png" → schoolLogo: '/svc-logo.png'
   schoolLogo: '/svc-logo.jpg',
@@ -222,6 +222,13 @@ const EDUCATION = {
 
 // ▼ For each cert, set image: '/cert-1.jpg' etc. once you add them to /public/
 const CERTIFICATIONS = [
+  {
+    title: 'CERTIFICATE OF COMPLETION | Canva Essentials',
+    issuer: 'Canva',
+    date: 'May 15, 2026',
+    icon: '🎨',
+    image: '/cert5.png', // e.g. '/cert-csc.jpg'
+  },
   {
     title: 'Civil Service Examination (Professional)',
     issuer: 'Civil Service Commission',
@@ -975,7 +982,7 @@ function ObjectiveSection() {
 
         {/* Trait tags */}
         <div className="flex flex-wrap gap-2 mt-8">
-          {['Detail-oriented', 'Computer literate', 'Self-motivated', 'Fast learner', 'Remote-ready', 'Team player'].map((t) => (
+          {['Detail-oriented', 'Self-motivated', 'Fast learner', 'Remote-ready', 'Team player'].map((t) => (
             <span key={t} className="font-mono text-xs px-3 py-1.5 rounded-full"
               style={{ background: '#22d3ee0d', color: '#22d3ee99', border: '1px solid #22d3ee22' }}>
               {t}
@@ -1169,17 +1176,48 @@ function ProjectCard({ project, onClick }) {
 
 function ProjectsSection() {
   const [selected, setSelected] = useState(null);
+  const [showAll, setShowAll] = useState(false);
+  const INITIAL_SHOW = 4; // always show first 4 (2×2)
+  const visible = showAll ? PROJECTS : PROJECTS.slice(0, INITIAL_SHOW);
+  const hasMore = PROJECTS.length > INITIAL_SHOW;
 
   return (
     <section id="projects" className="py-24">
-      <div className="px-8 md:px-20 max-w-5xl mx-auto">
+      <div className="px-6 md:px-20 max-w-5xl mx-auto">
         <SectionHeader label="02 / Work" title="Projects" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {PROJECTS.map((p, i) => (
-            <ProjectCard key={i} project={p} index={i} onClick={() => setSelected(p)} />
+
+        {/* Grid — 1 col mobile, 2 col desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {visible.map((p, i) => (
+            <div key={i} className="reveal" style={{ animationDelay: `${i * 60}ms` }}>
+              <ProjectCard project={p} index={i} onClick={() => setSelected(p)} />
+            </div>
           ))}
         </div>
-        <p className="text-center font-mono text-xs text-slate-600 mt-6">
+
+        {/* Show more / less toggle */}
+        {hasMore && (
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={() => setShowAll((v) => !v)}
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl border font-mono text-sm transition-all duration-200 hover:scale-105"
+              style={{ borderColor: '#22d3ee44', color: '#22d3ee', background: '#22d3ee0a' }}>
+              {showAll ? (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 15l-6-6-6 6"/></svg>
+                  Show Less
+                </>
+              ) : (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
+                  Show {PROJECTS.length - INITIAL_SHOW} More Project{PROJECTS.length - INITIAL_SHOW > 1 ? 's' : ''}
+                </>
+              )}
+            </button>
+          </div>
+        )}
+
+        <p className="text-center font-mono text-xs text-slate-600 mt-4">
           click any card to see full details & photos
         </p>
       </div>
@@ -1191,36 +1229,141 @@ function ProjectsSection() {
 // ─── EXPERIENCE ────────────────────────────────────────────────────────────────
 
 function ExperienceSection() {
+  const [open, setOpen] = useState(0); // first job open by default
+
   return (
-    <section id="experience" className="px-8 md:px-20 py-24 max-w-5xl mx-auto">
+    <section id="experience" className="px-6 md:px-20 py-24 max-w-5xl mx-auto">
       <SectionHeader label="04 / Work History" title="Experience" />
-      <div className="flex flex-col gap-10">
-        {EXPERIENCE.map((exp, i) => (
-          <div key={i} className="reveal group relative pl-8 border-l border-cyan-400/20 hover:border-cyan-400/60 transition-all duration-300">
-            <div className="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full border border-cyan-400 bg-cyan-400/30 group-hover:bg-cyan-400 transition-colors duration-300 group-hover:shadow-lg"
-              style={{ '--tw-shadow': '0 0 10px #22d3ee' }} />
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3 gap-1">
-              <div>
-                <h3 className="font-body font-semibold text-white text-lg">{exp.role}</h3>
-                <p className="font-mono text-sm" style={{ color: '#22d3ee' }}>{exp.company}</p>
-              </div>
-              <div className="flex flex-col items-start md:items-end gap-1">
-                <span className="font-mono text-slate-500 text-xs">{exp.period}</span>
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-mono"
-                  style={{ border: '1px solid #22d3ee44', color: '#22d3ee', background: '#22d3ee11' }}>{exp.type}</span>
+      <div className="flex flex-col gap-3">
+        {EXPERIENCE.map((exp, i) => {
+          const isOpen = open === i;
+          return (
+            <div key={i}
+              className="reveal rounded-2xl border overflow-hidden transition-all duration-300"
+              style={{
+                borderColor: isOpen ? '#22d3ee44' : 'rgba(34,211,238,0.12)',
+                background: '#141c2e',
+                boxShadow: isOpen ? '0 8px 32px rgba(34,211,238,0.08)' : 'none',
+              }}>
+
+              {/* ── Header row — always visible, click to toggle ── */}
+              <button
+                type="button"
+                className="w-full flex items-center gap-4 p-5 text-left"
+                onClick={() => setOpen(isOpen ? null : i)}>
+
+                {/* Timeline dot */}
+                <div className="flex-shrink-0 w-3 h-3 rounded-full border-2 transition-colors duration-300"
+                  style={{
+                    borderColor: '#22d3ee',
+                    background: isOpen ? '#22d3ee' : 'transparent',
+                    boxShadow: isOpen ? '0 0 8px #22d3ee' : 'none',
+                  }} />
+
+                {/* Role + company */}
+                <div className="flex-1 min-w-0">
+                  <p className="font-body font-semibold text-white text-sm md:text-base leading-snug">{exp.role}</p>
+                  <p className="font-mono text-xs mt-0.5" style={{ color: '#22d3ee' }}>{exp.company}</p>
+                </div>
+
+                {/* Period + type badge — hidden on very small screens, shown md+ */}
+                <div className="hidden sm:flex flex-col items-end gap-1 flex-shrink-0">
+                  <span className="font-mono text-slate-500 text-xs">{exp.period}</span>
+                  <span className="font-mono text-xs px-2 py-0.5 rounded-full"
+                    style={{ background: '#22d3ee11', color: '#22d3ee', border: '1px solid #22d3ee33' }}>
+                    {exp.type}
+                  </span>
+                </div>
+
+                {/* Chevron */}
+                <svg
+                  width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="#22d3ee" strokeWidth="2" strokeLinecap="round"
+                  className="flex-shrink-0 transition-transform duration-300"
+                  style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', opacity: 0.7 }}>
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </button>
+
+              {/* Period on mobile — shown below header when open */}
+              {isOpen && (
+                <div className="sm:hidden px-5 pb-2 flex items-center gap-2">
+                  <span className="font-mono text-slate-500 text-xs">{exp.period}</span>
+                  <span className="font-mono text-xs px-2 py-0.5 rounded-full"
+                    style={{ background: '#22d3ee11', color: '#22d3ee', border: '1px solid #22d3ee33' }}>
+                    {exp.type}
+                  </span>
+                </div>
+              )}
+
+              {/* ── Expandable bullet list ── */}
+              <div
+                style={{
+                  maxHeight: isOpen ? '600px' : '0',
+                  overflow: 'hidden',
+                  transition: 'max-height 0.4s ease',
+                }}>
+                <div className="px-5 pb-5 pt-1 border-t border-cyan-400/10">
+                  <ul className="flex flex-col gap-2 mt-3">
+                    {exp.bullets.map((b, j) => (
+                      <li key={j} className="flex gap-2.5 font-body text-slate-400 text-sm leading-relaxed">
+                        <span className="flex-shrink-0 mt-1 w-1.5 h-1.5 rounded-full" style={{ background: '#22d3ee66' }} />
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
-            <ul className="flex flex-col gap-1.5">
-              {exp.bullets.map((b, j) => (
-                <li key={j} className="flex gap-2 font-body text-slate-400 text-sm leading-relaxed">
-                  <span style={{ color: '#22d3ee' }} className="mt-0.5 flex-shrink-0">›</span>{b}
-                </li>
-              ))}
-            </ul>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+// Desktop cert grid with show-more toggle
+function CertGrid({ onOpen }) {
+  const [showAll, setShowAll] = useState(false);
+  const INITIAL = 4;
+  const visible = showAll ? CERTIFICATIONS : CERTIFICATIONS.slice(0, INITIAL);
+  const hasMore = CERTIFICATIONS.length > INITIAL;
+
+  return (
+    <div className="hidden sm:block">
+      <div className="grid sm:grid-cols-2 gap-4">
+        {visible.map((c, i) => (
+          <div key={i}
+            className="flex gap-4 p-4 rounded-xl border border-cyan-400/10 transition-all duration-200 cursor-pointer group"
+            style={{ background: '#141c2e' }}
+            onClick={() => onOpen(c)}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#22d3ee55'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(34,211,238,0.08)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(34,211,238,0.1)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
+            <span className="text-2xl flex-shrink-0 mt-0.5">{c.icon}</span>
+            <div className="flex-1 min-w-0">
+              <p className="font-body text-slate-200 text-sm font-medium leading-snug mb-1">{c.title}</p>
+              <p className="font-mono text-xs mb-0.5" style={{ color: '#22d3ee' }}>{c.issuer}</p>
+              <p className="font-mono text-slate-500 text-xs">{c.date}</p>
+            </div>
+            <span className="text-slate-600 group-hover:text-cyan-400 transition-colors flex-shrink-0 self-center text-lg">↗</span>
           </div>
         ))}
       </div>
-    </section>
+      {hasMore && (
+        <div className="flex justify-center mt-4">
+          <button
+            onClick={() => setShowAll((v) => !v)}
+            className="flex items-center gap-2 px-5 py-2 rounded-xl border font-mono text-xs transition-all duration-200 hover:scale-105"
+            style={{ borderColor: '#22d3ee44', color: '#22d3ee', background: '#22d3ee0a' }}>
+            {showAll ? (
+              <><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 15l-6-6-6 6"/></svg>Show Less</>
+            ) : (
+              <><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>Show {CERTIFICATIONS.length - INITIAL} More</>
+            )}
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -1343,28 +1486,47 @@ function EducationSection() {
         )}
       </div>
 
-      {/* Certifications */}
+      {/* ── Certifications ── */}
       <div className="reveal mt-10 mb-3">
-        <p className="font-mono text-slate-400 text-xs tracking-widest uppercase mb-2">Certifications & Credentials</p>
-        <p className="font-mono text-xs text-slate-600 mb-4 italic">Click any card to view certificate image</p>
-        <div className="grid sm:grid-cols-2 gap-4">
-          {CERTIFICATIONS.map((c, i) => (
-            <div key={i}
-              className="reveal flex gap-4 p-4 rounded-xl border border-cyan-400/10 transition-all duration-200 cursor-pointer group"
-              style={{ background: '#141c2e' }}
-              onClick={() => setCertModal(c)}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#22d3ee55'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(34,211,238,0.1)'; e.currentTarget.style.transform = 'translateY(0)'; }}>
-              <span className="text-2xl flex-shrink-0 mt-0.5">{c.icon}</span>
-              <div className="flex-1 min-w-0">
-                <p className="font-body text-slate-200 text-sm font-medium leading-snug mb-1">{c.title}</p>
-                <p className="font-mono text-xs mb-0.5" style={{ color: '#22d3ee' }}>{c.issuer}</p>
-                <p className="font-mono text-slate-500 text-xs">{c.date}</p>
-              </div>
-              <span className="text-slate-600 group-hover:text-cyan-400 transition-colors flex-shrink-0 self-center text-lg">↗</span>
-            </div>
-          ))}
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <p className="font-mono text-slate-400 text-xs tracking-widest uppercase">Certifications & Credentials</p>
+            <p className="font-mono text-xs text-slate-600 mt-1 italic">Tap any card to view certificate</p>
+          </div>
+          <span className="font-mono text-xs text-slate-600">{CERTIFICATIONS.length} total</span>
         </div>
+
+        {/* Mobile: horizontal snap scroll */}
+        <div className="sm:hidden -mx-6 px-6">
+          <div
+            className="flex gap-3 overflow-x-auto pb-3"
+            style={{ scrollSnapType: 'x mandatory', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
+            {CERTIFICATIONS.map((c, i) => (
+              <div key={i}
+                onClick={() => setCertModal(c)}
+                className="flex-shrink-0 flex flex-col gap-3 p-4 rounded-2xl border border-cyan-400/10 cursor-pointer active:scale-95 transition-transform"
+                style={{ width: '240px', background: '#141c2e', scrollSnapAlign: 'start' }}>
+                <div className="flex items-center justify-between">
+                  <span className="text-2xl">{c.icon}</span>
+                  <span className="font-mono text-xs px-2 py-0.5 rounded-full" style={{ background: '#22d3ee11', color: '#22d3ee', border: '1px solid #22d3ee33' }}>
+                    {i + 1}/{CERTIFICATIONS.length}
+                  </span>
+                </div>
+                <div>
+                  <p className="font-body text-slate-200 text-sm font-medium leading-snug mb-1">{c.title}</p>
+                  <p className="font-mono text-xs mb-0.5" style={{ color: '#22d3ee' }}>{c.issuer}</p>
+                  <p className="font-mono text-slate-500 text-xs">{c.date}</p>
+                </div>
+                <p className="font-mono text-xs mt-auto" style={{ color: '#22d3ee66' }}>tap to view ↗</p>
+              </div>
+            ))}
+          </div>
+          {/* Scroll hint */}
+          <p className="font-mono text-xs text-slate-600 text-center mt-1">← swipe to see all →</p>
+        </div>
+
+        {/* Desktop: 2-col grid with show more */}
+        <CertGrid onOpen={setCertModal} />
       </div>
 
       {/* Strengths */}
